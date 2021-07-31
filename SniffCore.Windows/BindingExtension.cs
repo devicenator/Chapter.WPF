@@ -166,18 +166,17 @@ namespace SniffCore.Windows
         public static readonly DependencyProperty XPathProperty =
             DependencyProperty.Register("XPath", typeof(string), typeof(BindingExtension), new PropertyMetadata(OnDataChanged));
 
-        private readonly bool _isChangedInternally;
+        private readonly WorkingIndicator _isChangedInternally;
 
         /// <summary>
         ///     Initializes a new instance of the <see cref="BindingExtension" /> class.
         /// </summary>
         public BindingExtension()
         {
-            _isChangedInternally = true;
-
-            new Binding().CopyInto(this);
-
-            _isChangedInternally = false;
+            using (_isChangedInternally = new WorkingIndicator())
+            {
+                new Binding().CopyInto(this);
+            }
         }
 
         internal FrameworkElement Owner
@@ -392,7 +391,7 @@ namespace SniffCore.Windows
 
         private void Update()
         {
-            if (_isChangedInternally)
+            if (WorkingIndicator.IsActive(_isChangedInternally))
                 return;
 
             if (Owner == null || Property == null)
