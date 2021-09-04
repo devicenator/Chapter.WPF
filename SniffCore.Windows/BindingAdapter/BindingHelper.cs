@@ -5,6 +5,8 @@
 
 using System.Windows.Data;
 
+// ReSharper disable once CheckNamespace
+
 namespace SniffCore.Windows
 {
     internal static class BindingHelper

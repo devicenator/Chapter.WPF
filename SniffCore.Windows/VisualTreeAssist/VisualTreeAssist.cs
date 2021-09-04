@@ -7,6 +7,8 @@ using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Media;
 
+// ReSharper disable once CheckNamespace
+
 namespace SniffCore.Windows
 {
     /// <summary>

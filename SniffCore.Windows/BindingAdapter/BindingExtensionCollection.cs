@@ -5,6 +5,8 @@
 
 using System.Collections.ObjectModel;
 
+// ReSharper disable once CheckNamespace
+
 namespace SniffCore.Windows
 {
     /// <summary>
