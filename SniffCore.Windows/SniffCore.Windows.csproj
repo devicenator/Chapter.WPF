@@ -17,7 +17,7 @@
     <PackageIcon>Icon.png</PackageIcon>
     <PackageIconUrl />
     <RepositoryUrl>https://github.com/devicenator/SniffCore.Windows</RepositoryUrl>
-    <Version>1.1.2</Version>
+    <Version>1.1.3</Version>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
