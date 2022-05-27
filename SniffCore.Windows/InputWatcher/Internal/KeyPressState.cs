@@ -1,4 +1,4 @@
-// 
+﻿// 
 // Copyright (c) David Wendland. All rights reserved.
 // Licensed under the MIT License. See LICENSE file in the project root for full license information.
 // 
@@ -8,18 +8,18 @@
 namespace SniffCore.Windows
 {
     /// <summary>
-    ///     Defines the state of a key.
+    ///     Represents a press state.
     /// </summary>
-    public enum KeyState
+    public enum KeyPressState
     {
         /// <summary>
-        ///     The key is in the pressed state.
+        ///     The key was pressed.
         /// </summary>
-        Pressed,
+        Down,
 
         /// <summary>
-        ///     The key is in the released state.
+        ///     The key was released.
         /// </summary>
-        Released
+        Up
     }
 }
