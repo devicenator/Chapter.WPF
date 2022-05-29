@@ -71,9 +71,11 @@ namespace SniffCore.Windows
             _callback = callback;
         }
 
-        internal override void Handle(IntPtr wParam, IntPtr lParam)
+        internal override void Handle(WH hookType, IntPtr wParam, IntPtr lParam)
         {
-            if (_keyPassGate.Pass(wParam, lParam) && _modifierKeyPassGate.Pass())
+            if (hookType == WH.KEYBOARD_LL &&
+                _keyPassGate.Pass(wParam, lParam) &&
+                _modifierKeyPassGate.Pass())
             {
                 var args = new KeyboardEventArgs(_keyPassGate.Key, _keyPassGate.KeyPressState, Keyboard.Modifiers);
                 _callback(args);

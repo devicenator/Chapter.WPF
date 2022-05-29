@@ -14,6 +14,6 @@ namespace SniffCore.Windows
     /// </summary>
     public abstract class Input
     {
-        internal abstract void Handle(IntPtr wParam, IntPtr lParam);
+        internal abstract void Handle(WH hookType, IntPtr wParam, IntPtr lParam);
     }
 }

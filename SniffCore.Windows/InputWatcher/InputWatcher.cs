@@ -6,6 +6,7 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
 
 // ReSharper disable once CheckNamespace
 
@@ -15,7 +16,8 @@ namespace SniffCore.Windows
     public class InputWatcher : IInputWatcher
     {
         private readonly Dictionary<SubscribeToken, Input> _callbacks;
-        private readonly WindowHooks _windowHooks;
+        private WindowHooks _windowKeyboardHooks;
+        private WindowHooks _windowsMouseHooks;
 
         /// <summary>
         ///     Creates a new InputWatcher.
@@ -23,8 +25,10 @@ namespace SniffCore.Windows
         public InputWatcher()
         {
             _callbacks = new Dictionary<SubscribeToken, Input>();
-            _windowHooks = new WindowHooks();
         }
+
+        /// <inheritdoc />
+        public bool IsObserving { get; private set; }
 
         /// <inheritdoc />
         public SubscribeToken Observe(Input input)
@@ -32,20 +36,24 @@ namespace SniffCore.Windows
             var token = new SubscribeToken();
             token.Disposed += OnTokenDisposed;
             _callbacks.Add(token, input);
+            SyncHooks();
             return token;
         }
 
         /// <inheritdoc />
         public void Start()
         {
-            using var process = Process.GetCurrentProcess();
-            _windowHooks.HookIn(process, EventReceived);
+            IsObserving = true;
+            SyncHooks();
         }
 
         /// <inheritdoc />
         public void Stop()
         {
-            _windowHooks.HookOut();
+            IsObserving = false;
+
+            _windowKeyboardHooks?.HookOut();
+            _windowKeyboardHooks = null;
         }
 
         /// <summary>
@@ -57,17 +65,44 @@ namespace SniffCore.Windows
             _callbacks.Clear();
         }
 
+        private void SyncHooks()
+        {
+            if (!IsObserving)
+                return;
+
+            Process process = null;
+            if (_windowKeyboardHooks == null && _callbacks.Any(x => x.Value is KeyboardInput))
+            {
+                process = Process.GetCurrentProcess();
+                _windowKeyboardHooks = new WindowHooks();
+                _windowKeyboardHooks.HookIn(process, WH.KEYBOARD_LL, KeyboardEventReceived);
+            }
+            else if (_windowKeyboardHooks != null)
+            {
+                _windowKeyboardHooks?.HookOut();
+                _windowKeyboardHooks = null;
+            }
+
+            process?.Dispose();
+        }
+
         private void OnTokenDisposed(object sender, EventArgs e)
         {
             var token = (SubscribeToken) sender;
             token.Disposed -= OnTokenDisposed;
             _callbacks.Remove(token);
+            SyncHooks();
         }
 
-        private void EventReceived(int code, IntPtr wParam, IntPtr lParam)
+        private void KeyboardEventReceived(int code, IntPtr wParam, IntPtr lParam)
+        {
+            EventReceived(WH.KEYBOARD_LL, wParam, lParam);
+        }
+
+        private void EventReceived(WH hookType, IntPtr wParam, IntPtr lParam)
         {
             foreach (var callback in _callbacks)
-                callback.Value.Handle(wParam, lParam);
+                callback.Value.Handle(hookType, wParam, lParam);
         }
     }
 }

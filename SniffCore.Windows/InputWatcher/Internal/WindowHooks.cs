@@ -16,7 +16,7 @@ namespace SniffCore.Windows
     /// </summary>
     public class WindowHooks
     {
-        private static Proc _proc;
+        private readonly Proc _proc;
         private Action<int, IntPtr, IntPtr> _callback;
         private IntPtr _hookId;
 
@@ -33,8 +33,9 @@ namespace SniffCore.Windows
         ///     Hooks a callback into the window event message queue.
         /// </summary>
         /// <param name="process">The process what main module to use.</param>
+        /// <param name="hookType">The type of hooks to listen for.</param>
         /// <param name="callback">The callback executed if a windows message event arrives.</param>
-        public void HookIn(Process process, Action<int, IntPtr, IntPtr> callback)
+        public void HookIn(Process process, WH hookType, Action<int, IntPtr, IntPtr> callback)
         {
             _callback = callback;
 
@@ -42,7 +43,7 @@ namespace SniffCore.Windows
                 return;
 
             using var module = process.MainModule;
-            _hookId = SetWindowsHookEx((int) WH.KEYBOARD_LL, _proc, GetModuleHandle(module?.ModuleName), 0);
+            _hookId = SetWindowsHookEx((int) hookType, _proc, GetModuleHandle(module?.ModuleName), 0);
         }
 
         /// <summary>
