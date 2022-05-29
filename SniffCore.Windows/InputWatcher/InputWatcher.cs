@@ -54,6 +54,9 @@ namespace SniffCore.Windows
 
             _windowKeyboardHooks?.HookOut();
             _windowKeyboardHooks = null;
+
+            _windowsMouseHooks?.HookOut();
+            _windowsMouseHooks = null;
         }
 
         /// <summary>
@@ -83,6 +86,18 @@ namespace SniffCore.Windows
                 _windowKeyboardHooks = null;
             }
 
+            if (_windowsMouseHooks == null && _callbacks.Any(x => x.Value is MouseInput))
+            {
+                process ??= Process.GetCurrentProcess();
+                _windowsMouseHooks = new WindowHooks();
+                _windowsMouseHooks.HookIn(process, WH.MOUSE_LL, MouseEventReceived);
+            }
+            else if (_windowsMouseHooks != null)
+            {
+                _windowsMouseHooks?.HookOut();
+                _windowsMouseHooks = null;
+            }
+
             process?.Dispose();
         }
 
@@ -97,6 +112,14 @@ namespace SniffCore.Windows
         private void KeyboardEventReceived(int code, IntPtr wParam, IntPtr lParam)
         {
             EventReceived(WH.KEYBOARD_LL, wParam, lParam);
+        }
+
+        private void MouseEventReceived(int code, IntPtr wParam, IntPtr lParam)
+        {
+            if (wParam == (IntPtr) WM.MOUSEMOVE)
+                return;
+
+            EventReceived(WH.MOUSE_LL, wParam, lParam);
         }
 
         private void EventReceived(WH hookType, IntPtr wParam, IntPtr lParam)
