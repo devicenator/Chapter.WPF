@@ -6,6 +6,9 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 ## [Ideas/Upcoming]
 
 ## [Unreleased]
+### Changed
+* Upgrade to net6
+
 ## [1.2.1] - 2022-05-30
 ## Added
 Merge from library SniffCore.DragNDrop
