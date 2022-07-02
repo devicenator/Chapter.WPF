@@ -8,17 +8,16 @@ using System.Windows.Forms;
 
 // ReSharper disable once CheckNamespace
 
-namespace SniffCore.Windows
+namespace SniffCore.Windows;
+
+/// <summary>
+///     Represents an item in the <see cref="TrayContextMenu" />.
+/// </summary>
+public abstract class TrayContextItem : Freezable
 {
     /// <summary>
-    ///     Represents an item in the <see cref="TrayContextMenu" />.
+    ///     Creates the windows forms tool strip item.
     /// </summary>
-    public abstract class TrayContextItem : Freezable
-    {
-        /// <summary>
-        ///     Creates the windows forms tool strip item.
-        /// </summary>
-        /// <returns>The windows forms tool strip item.</returns>
-        public abstract ToolStripItem GetToolStripItem();
-    }
+    /// <returns>The windows forms tool strip item.</returns>
+    public abstract ToolStripItem GetToolStripItem();
 }

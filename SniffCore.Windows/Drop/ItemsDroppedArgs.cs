@@ -5,27 +5,26 @@
 
 // ReSharper disable once CheckNamespace
 
-namespace SniffCore.Windows
+namespace SniffCore.Windows;
+
+/// <summary>
+///     The command args containing the data sent with the <see cref="DropItem.Command" />.
+/// </summary>
+public sealed class ItemsDroppedArgs
 {
-    /// <summary>
-    ///     The command args containing the data sent with the <see cref="DropItem.Command" />.
-    /// </summary>
-    public sealed class ItemsDroppedArgs
+    internal ItemsDroppedArgs(string[] items, object parameter)
     {
-        internal ItemsDroppedArgs(string[] items, object parameter)
-        {
-            Items = items;
-            Parameter = parameter;
-        }
-
-        /// <summary>
-        ///     Gets the dropped items.
-        /// </summary>
-        public string[] Items { get; }
-
-        /// <summary>
-        ///     Gets the command parameter.
-        /// </summary>
-        public object Parameter { get; }
+        Items = items;
+        Parameter = parameter;
     }
+
+    /// <summary>
+    ///     Gets the dropped items.
+    /// </summary>
+    public string[] Items { get; }
+
+    /// <summary>
+    ///     Gets the command parameter.
+    /// </summary>
+    public object Parameter { get; }
 }

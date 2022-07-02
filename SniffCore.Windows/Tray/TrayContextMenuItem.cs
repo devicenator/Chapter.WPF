@@ -10,82 +10,81 @@ using System.Windows.Input;
 
 // ReSharper disable once CheckNamespace
 
-namespace SniffCore.Windows
+namespace SniffCore.Windows;
+
+/// <summary>
+///     Represents a menu item in the <see cref="TrayContextMenu" />.
+/// </summary>
+public sealed class TrayContextMenuItem : TrayContextItem
 {
     /// <summary>
-    ///     Represents a menu item in the <see cref="TrayContextMenu" />.
+    ///     Identifies the Command property.
     /// </summary>
-    public sealed class TrayContextMenuItem : TrayContextItem
+    public static readonly DependencyProperty CommandProperty =
+        DependencyProperty.Register("Command", typeof(ICommand), typeof(TrayContextMenuItem), new PropertyMetadata(null));
+
+    /// <summary>
+    ///     Identifies the CommandParameter property.
+    /// </summary>
+    public static readonly DependencyProperty CommandParameterProperty =
+        DependencyProperty.Register("CommandParameter", typeof(object), typeof(TrayContextMenuItem), new PropertyMetadata(null));
+
+    /// <summary>
+    ///     Identifies the Header property.
+    /// </summary>
+    public static readonly DependencyProperty HeaderProperty =
+        DependencyProperty.Register("Header", typeof(string), typeof(TrayContextMenuItem), new PropertyMetadata(null));
+
+    /// <summary>
+    ///     Gets or sets the command to be executed if the user clicks on it.
+    /// </summary>
+    public ICommand Command
     {
-        /// <summary>
-        ///     Identifies the Command property.
-        /// </summary>
-        public static readonly DependencyProperty CommandProperty =
-            DependencyProperty.Register("Command", typeof(ICommand), typeof(TrayContextMenuItem), new PropertyMetadata(null));
+        get => (ICommand)GetValue(CommandProperty);
+        set => SetValue(CommandProperty, value);
+    }
 
-        /// <summary>
-        ///     Identifies the CommandParameter property.
-        /// </summary>
-        public static readonly DependencyProperty CommandParameterProperty =
-            DependencyProperty.Register("CommandParameter", typeof(object), typeof(TrayContextMenuItem), new PropertyMetadata(null));
+    /// <summary>
+    ///     Gets or sets the parameter to be passed with the <see cref="Command" />.
+    /// </summary>
+    public object CommandParameter
+    {
+        get => GetValue(CommandParameterProperty);
+        set => SetValue(CommandParameterProperty, value);
+    }
 
-        /// <summary>
-        ///     Identifies the Header property.
-        /// </summary>
-        public static readonly DependencyProperty HeaderProperty =
-            DependencyProperty.Register("Header", typeof(string), typeof(TrayContextMenuItem), new PropertyMetadata(null));
+    /// <summary>
+    ///     Gets or sets the header text of the menu entry.
+    /// </summary>
+    public string Header
+    {
+        get => (string)GetValue(HeaderProperty);
+        set => SetValue(HeaderProperty, value);
+    }
 
-        /// <summary>
-        ///     Gets or sets the command to be executed if the user clicks on it.
-        /// </summary>
-        public ICommand Command
-        {
-            get => (ICommand) GetValue(CommandProperty);
-            set => SetValue(CommandProperty, value);
-        }
+    /// <inheritdoc />
+    public override ToolStripItem GetToolStripItem()
+    {
+        var item = new ToolStripMenuItem(Header, null, OnClick);
+        return item;
+    }
 
-        /// <summary>
-        ///     Gets or sets the parameter to be passed with the <see cref="Command" />.
-        /// </summary>
-        public object CommandParameter
-        {
-            get => GetValue(CommandParameterProperty);
-            set => SetValue(CommandParameterProperty, value);
-        }
+    /// <summary>
+    ///     Raised if the user clicked the menu entry.
+    /// </summary>
+    public event EventHandler Click;
 
-        /// <summary>
-        ///     Gets or sets the header text of the menu entry.
-        /// </summary>
-        public string Header
-        {
-            get => (string) GetValue(HeaderProperty);
-            set => SetValue(HeaderProperty, value);
-        }
+    private void OnClick(object sender, EventArgs e)
+    {
+        if (Command != null && Command.CanExecute(CommandParameter))
+            Command.Execute(CommandParameter);
 
-        /// <inheritdoc />
-        public override ToolStripItem GetToolStripItem()
-        {
-            var item = new ToolStripMenuItem(Header, null, OnClick);
-            return item;
-        }
+        Click?.Invoke(this, EventArgs.Empty);
+    }
 
-        /// <summary>
-        ///     Raised if the user clicked the menu entry.
-        /// </summary>
-        public event EventHandler Click;
-
-        private void OnClick(object sender, EventArgs e)
-        {
-            if (Command != null && Command.CanExecute(CommandParameter))
-                Command.Execute(CommandParameter);
-
-            Click?.Invoke(this, EventArgs.Empty);
-        }
-
-        /// <inheritdoc />
-        protected override Freezable CreateInstanceCore()
-        {
-            return this;
-        }
+    /// <inheritdoc />
+    protected override Freezable CreateInstanceCore()
+    {
+        return this;
     }
 }

@@ -8,23 +8,22 @@ using System.Windows.Forms;
 
 // ReSharper disable once CheckNamespace
 
-namespace SniffCore.Windows
-{
-    /// <summary>
-    ///     Represents a separator line in the <see cref="TrayContextMenu" />.
-    /// </summary>
-    public sealed class TrayContextSeparator : TrayContextItem
-    {
-        /// <inheritdoc />
-        public override ToolStripItem GetToolStripItem()
-        {
-            return new ToolStripSeparator();
-        }
+namespace SniffCore.Windows;
 
-        /// <inheritdoc />
-        protected override Freezable CreateInstanceCore()
-        {
-            return this;
-        }
+/// <summary>
+///     Represents a separator line in the <see cref="TrayContextMenu" />.
+/// </summary>
+public sealed class TrayContextSeparator : TrayContextItem
+{
+    /// <inheritdoc />
+    public override ToolStripItem GetToolStripItem()
+    {
+        return new ToolStripSeparator();
+    }
+
+    /// <inheritdoc />
+    protected override Freezable CreateInstanceCore()
+    {
+        return this;
     }
 }

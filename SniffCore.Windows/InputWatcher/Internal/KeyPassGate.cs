@@ -9,31 +9,30 @@ using System.Windows.Input;
 
 // ReSharper disable once CheckNamespace
 
-namespace SniffCore.Windows
+namespace SniffCore.Windows;
+
+internal class KeyPassGate
 {
-    internal class KeyPassGate
+    public KeyPassGate(Key key, KeyPressState keyPressState)
     {
-        public KeyPassGate(Key key, KeyPressState keyPressState)
+        Key = key;
+        KeyPressState = keyPressState;
+    }
+
+    public Key Key { get; }
+    public KeyPressState KeyPressState { get; }
+
+    public bool Pass(IntPtr wParam, IntPtr lParam)
+    {
+        var key = KeyInterop.KeyFromVirtualKey(Marshal.ReadInt32(lParam));
+        if (key != Key)
+            return false;
+
+        return KeyPressState switch
         {
-            Key = key;
-            KeyPressState = keyPressState;
-        }
-
-        public Key Key { get; }
-        public KeyPressState KeyPressState { get; }
-
-        public bool Pass(IntPtr wParam, IntPtr lParam)
-        {
-            var key = KeyInterop.KeyFromVirtualKey(Marshal.ReadInt32(lParam));
-            if (key != Key)
-                return false;
-
-            return KeyPressState switch
-            {
-                KeyPressState.Down => wParam == (IntPtr) WM.KEYDOWN || wParam == (IntPtr) WM.SYSKEYDOWN,
-                KeyPressState.Up => wParam == (IntPtr) WM.KEYUP || wParam == (IntPtr) WM.SYSKEYUP,
-                _ => false
-            };
-        }
+            KeyPressState.Down => wParam == (IntPtr)WM.KEYDOWN || wParam == (IntPtr)WM.SYSKEYDOWN,
+            KeyPressState.Up => wParam == (IntPtr)WM.KEYUP || wParam == (IntPtr)WM.SYSKEYUP,
+            _ => false
+        };
     }
 }

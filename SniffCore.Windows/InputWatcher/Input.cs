@@ -7,13 +7,12 @@ using System;
 
 // ReSharper disable once CheckNamespace
 
-namespace SniffCore.Windows
+namespace SniffCore.Windows;
+
+/// <summary>
+///     The base class for the mouse or keyboard inputs used in the <see cref="IInputWatcher" />.
+/// </summary>
+public abstract class Input
 {
-    /// <summary>
-    ///     The base class for the mouse or keyboard inputs used in the <see cref="IInputWatcher" />.
-    /// </summary>
-    public abstract class Input
-    {
-        internal abstract void Handle(WH hookType, IntPtr wParam, IntPtr lParam);
-    }
+    internal abstract void Handle(WH hookType, IntPtr wParam, IntPtr lParam);
 }

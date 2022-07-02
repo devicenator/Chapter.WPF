@@ -7,12 +7,11 @@ using System.Collections.ObjectModel;
 
 // ReSharper disable once CheckNamespace
 
-namespace SniffCore.Windows
+namespace SniffCore.Windows;
+
+/// <summary>
+///     Represents a collection of <see cref="BindingExtension" />.
+/// </summary>
+public class BindingExtensionCollection : Collection<BindingExtension>
 {
-    /// <summary>
-    ///     Represents a collection of <see cref="BindingExtension" />.
-    /// </summary>
-    public class BindingExtensionCollection : Collection<BindingExtension>
-    {
-    }
 }

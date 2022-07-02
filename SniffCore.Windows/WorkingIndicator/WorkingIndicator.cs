@@ -7,25 +7,24 @@ using System;
 
 // ReSharper disable once CheckNamespace
 
-namespace SniffCore.Windows
+namespace SniffCore.Windows;
+
+internal class WorkingIndicator : IDisposable
 {
-    internal class WorkingIndicator : IDisposable
+    private bool _flag;
+
+    internal WorkingIndicator()
     {
-        private bool _flag;
+        _flag = true;
+    }
 
-        internal WorkingIndicator()
-        {
-            _flag = true;
-        }
+    public void Dispose()
+    {
+        _flag = false;
+    }
 
-        public void Dispose()
-        {
-            _flag = false;
-        }
-
-        internal static bool IsActive(WorkingIndicator indicator)
-        {
-            return indicator?._flag == true;
-        }
+    internal static bool IsActive(WorkingIndicator indicator)
+    {
+        return indicator?._flag == true;
     }
 }

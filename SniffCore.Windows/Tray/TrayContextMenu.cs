@@ -7,12 +7,11 @@ using System.Windows;
 
 // ReSharper disable once CheckNamespace
 
-namespace SniffCore.Windows
+namespace SniffCore.Windows;
+
+/// <summary>
+///     Contains all context menu items for the <see cref="TrayIcon" />.
+/// </summary>
+public sealed class TrayContextMenu : FreezableCollection<TrayContextItem>
 {
-    /// <summary>
-    ///     Contains all context menu items for the <see cref="TrayIcon" />.
-    /// </summary>
-    public sealed class TrayContextMenu : FreezableCollection<TrayContextItem>
-    {
-    }
 }
