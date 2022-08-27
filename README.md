@@ -1,11 +1,11 @@
-SniffCore.Windows
+Chapter.WPF
 ===
 
-Brings additional behavior and features to a WPF window and its visual tree.
+Brings additional behavior and features to WPF in general.
 
 ## Links
-* [NuGet](https://www.nuget.org/packages/SniffCore.Windows)
-* [GitHub](https://github.com/devicenator/SniffCore.Windows)
+* [NuGet](https://www.nuget.org/packages/Chapter.WPF)
+* [GitHub](https://github.com/devicenator/Chapter.WPF)
 
 ## License
 Copyright (c) David Wendland. All rights reserved.  
