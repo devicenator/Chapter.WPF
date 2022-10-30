@@ -5,6 +5,11 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 
 ## [Unreleased]
 
+## [1.0.1] - 2022-10-30
+### Added
+* Added IDispatcher with a default implementation of UIDispatcher
+* Added static methods to access the UIDispatcher
+
 ## [1.0.0] - 2022-08-27
 ### Changed
 * Rebrand to Chapter.WPF
